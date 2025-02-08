@@ -20,8 +20,8 @@ const handleSubmit = async (event) => {
   }
 
 
-const placeholderArray = placeholders.split(',');
-const replacementArray = replacements.split(',');
+const placeholderArray = placeholders.split(';');
+const replacementArray = replacements.split(';');
 
 if(placeholderArray.length !== replacementArray.length){
   alert('The number of placeholders and replacements must match.');
@@ -49,7 +49,7 @@ try {
   
 return(
   <div className="container">
-    <h1>PDF Placeholder Replacer</h1>
+    <h1>Placeholder Replacer</h1>
     <form onSubmit={handleSubmit}>
       <label htmlFor="pdfFile">Upload PDF:</label>
       <input
@@ -59,7 +59,7 @@ return(
       onChange={handleFileChange}
       />
 
-      <label htmlFor="placeholders">Placeholders (comma-separated):</label>
+      <label htmlFor="placeholders">Placeholders (semicolon-separated ';'):</label>
       <input
       type="text"
       id="placeholders"
@@ -67,7 +67,7 @@ return(
       onChange={(e) => setPlaceholders(e.target.value)}
       />
 
-      <label htmlFor="replacements">Replacements (comma-separated):</label>
+      <label htmlFor="replacements">Replacements (semicolon-separated ';'):</label>
       <input
       type="text"
       id="replacements"
