@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import logo from './logo.svg';
-
 import './App.css';
 
 function App() {
@@ -25,7 +23,7 @@ const handleSubmit = async (event) => {
 const placeholderArray = placeholders.split(',');
 const replacementArray = replacements.split(',');
 
-if(placeholderArray.length != replacementArray.length){
+if(placeholderArray.length !== replacementArray.length){
   alert('The number of placeholders and replacements must match.');
   return;
 }
@@ -36,8 +34,10 @@ formData.append('placeholders', JSON.stringify(placeholderArray));
 formData.append('replacements', JSON.stringify(replacementArray));
 
 try {
-  const response = await axios.post('/api/pdf/replace', formData, {
-    responseType: 'blob',
+  const response = await axios.post('http://localhost:8080/api/pdf/replace', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   });
   const url = URL.createObjectURL(new Blob([response.data]));
   setDownloadLink(url);
@@ -51,7 +51,7 @@ return(
   <div className="container">
     <h1>PDF Placeholder Replacer</h1>
     <form onSubmit={handleSubmit}>
-      <label htmlFor='pdfFile'>Upload PDF:</label>
+      <label htmlFor="pdfFile">Upload PDF:</label>
       <input
       type="file"
       id="pdfFile"
@@ -59,32 +59,32 @@ return(
       onChange={handleFileChange}
       />
 
-      <label htmlFor='placeholders'>Placeholders (comma-separated):</label>
+      <label htmlFor="placeholders">Placeholders (comma-separated):</label>
       <input
-      type='text'
-      id='placeholders'
-      accept='{placeholders}'
+      type="text"
+      id="placeholders"
+      accept={placeholders}
       onChange={(e) => setPlaceholders(e.target.value)}
       />
 
-      <label htmlFor='placeholders'>Replacements (comma-separated):</label>
+      <label htmlFor="replacements">Replacements (comma-separated):</label>
       <input
-      type='text'
-      id='replacements'
-      accept='{replacements}'
+      type="text"
+      id="replacements"
+      accept={replacements}
       onChange={(e) => setReplacements(e.target.value)}
       />
 
-      <button type='submit'>Replace Placeholders</button>
+      <button type="submit">Replace Placeholders</button>
     </form>
     {downloadLink && (
-      <div id='result'>
+      <div id="result">
         <h2>Modified PDF</h2>
-        <a id='downloadLink' href={downloadLink} download="modified.pdf">Download PDF</a>
+        <button><a id="downloadLink" href={downloadLink} download="modified.pdf">Download PDF</a></button>
       </div>
     )}
   </div>
-)
+);
 }
 
 export default App;
